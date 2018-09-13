@@ -1,0 +1,91 @@
+"""
+Idea: A simple math game, utilizing the command line.
+For graphics, emojis are used.
+"""
+
+import random
+import emoji
+
+retries = 3
+number_of_exercises = 10
+
+def say(sentence, language='nb_NO'):
+    # For full list of available voices, type "say -v '?'" in mac os terminal
+    voice_for_language = {
+        'nb_NO': 'Nora',
+        'sv_SE': 'Alva'
+    }
+    voice = voice_for_language[language]
+    words_per_minute = 250
+    !say -v {voice} -r {words_per_minute} {sentence}
+
+def ask(sentence):
+    # Can use ANSI escape codes to change colour of text
+    # http://ozzmaker.com/add-colour-to-text-in-python/
+    say(sentence)
+    return input(sentence)
+
+class Exercise(object):
+    # Level
+    # Type
+    a = None
+    b = None
+    op = None
+    max_int = 10
+
+    def __init__(self):
+        self.create()
+
+    def create(self):
+        self.a = random.randint(0, self.max_int)
+        self.b = random.randint(0, self.max_int)
+        self.op = '+'
+
+    def answer(self):
+        return eval(self.__repr__())
+
+    def __repr__(self):
+        return f'{self.a} {self.op} {self.b}'
+
+
+def get_exercise(operation='+'):
+    a = random.randint(0, 10)
+    b = random.randint(0, 10)
+    return f'{a} {operation} {b}'
+    
+def emoji_str(name):
+    # Full emoji list: http://www.unicode.org/emoji/charts/full-emoji-list.html
+    # Input emoji directly in vim by pressing <ctrl+v>U1F600<enter> in insert mode: 😀
+    # or, on Mac use ctrl+command+space to find and insert emoji
+    # Emoji cheat sheet: https://www.webfx.com/tools/emoji-cheat-sheet/
+    return emoji.emojize(f':{name}:', use_aliases=True) 
+
+def feil_svar():
+    #print(emoji_str('disappointed'))
+    print('😔')
+
+spill = True
+correct_answercount = 0
+
+name = ask("Hva heter du? 😊 ") # U1F60A
+say(f'Hei, {name}')
+
+while spill and correct_answercount < number_of_exercises:
+   #sum_question = get_exercise()
+   sum_question = Exercise()
+   for i in reversed(range(retries)):
+        spiller_svar = int(ask(str(sum_question) + ' = ' )) 
+        riktig_svar = eval(str(sum_question))
+        if spiller_svar == sum_question.answer():
+            say(f'{spiller_svar} er helt riktig, {name}')
+            print(emoji_str('thumbs_up'))
+            correct_answercount += 1
+            break
+        elif i >= 1:
+            feil_svar()
+            say(f'Du har {i} forsøk igjen, prøv igjen, {name}')
+        else:
+            feil_svar()
+            say(f'Du har 0 forsøk igjen. Beklager, {name}')
+            spill = False
+print(say(f'Du klarte {correct_answercount} korrekte svar, {name}.'))
