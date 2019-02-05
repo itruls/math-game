@@ -82,4 +82,4 @@ while spill and correct_answercount < number_of_exercises:
             feil_svar()
             say(f'Du har 0 forsøk igjen. Beklager, {name}')
             spill = False
-print(say(f'Du klarte {correct_answercount} korrekte svar, {name}.'))
+print(say(f'Du klarte {correct_answercount} korrekte svar!'))
