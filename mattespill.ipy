@@ -48,11 +48,6 @@ class Exercise(object):
         return f'{self.a} {self.op} {self.b}'
 
 
-def get_exercise(operation='+'):
-    a = random.randint(0, 10)
-    b = random.randint(0, 10)
-    return f'{a} {operation} {b}'
-    
 def emoji_str(name):
     # Full emoji list: http://www.unicode.org/emoji/charts/full-emoji-list.html
     # Input emoji directly in vim by pressing <ctrl+v>U1F600<enter> in insert mode: 😀
@@ -75,7 +70,6 @@ while spill and correct_answercount < number_of_exercises:
    sum_question = Exercise()
    for i in reversed(range(retries)):
         spiller_svar = int(ask(str(sum_question) + ' = ' )) 
-        riktig_svar = eval(str(sum_question))
         if spiller_svar == sum_question.answer():
             say(f'{spiller_svar} er helt riktig, {name}')
             print(emoji_str('thumbs_up'))
